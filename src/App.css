@@ -255,3 +255,25 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-logo {
   margin-right: 0.75rem;
 }
+
+/* --- 6. ESTILOS PARA FORMULARIOS Y PREVISUALIZACIÓN --- */
+
+/* Contenedor del formulario con el borde de color */
+.form-container-pro {
+  background-color: var(--bg-component); /* Fondo blanco */
+  padding: 2.5rem; /* Espaciado interno generoso */
+  border-radius: 12px; /* Bordes redondeados */
+  /* La clave: un borde de 2px con el color de acento de tu marca */
+  border: 2px solid var(--accent); 
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* Una sombra sutil para darle profundidad */
+}
+
+/* Estilos para la imagen de previsualización */
+.image-preview {
+  max-height: 250px; /* Altura máxima para que no sea demasiado grande */
+  max-width: 100%;   /* Se ajusta al ancho del contenedor */
+  border-radius: 8px; /* Bordes redondeados */
+  border: 1px solid var(--border-color); /* Un borde sutil */
+  object-fit: contain; /* Asegura que la imagen se vea completa sin deformarse */
+  margin-top: 0.5rem; /* Pequeño espacio superior */
+}
