@@ -1,38 +1,199 @@
-.App {
-  text-align: center;
+/* --- 1. SISTEMA DE DISEÑO --- */
+:root {
+  --bg-primary: #f0f2f5;
+  /* Fondo de página: Gris muy claro */
+  --bg-component: #ffffff;
+  /* Fondo para componentes claros: Blanco */
+  --bg-dark: #1e1e1e;
+  /* Fondo para componentes oscuros (Navbar) */
+  --accent: #ff9800;
+  /* Naranja elegante */
+  --accent-hover: #ffa726;
+  /* Naranja más claro para hover */
+  --text-primary: #212529;
+  /* Texto principal (sobre fondos claros) */
+  --text-light: #e0e0e0;
+  /* Texto secundario (sobre fondos oscuros) */
+  --border-color: #dee2e6;
+  /* Borde para componentes claros */
+  --border-color-dark: #2c2c2c;
+  /* Borde para componentes oscuros */
+  --success-color: #198754;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* --- ESTILOS GLOBALES --- */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.app-body {
+  background-color: var(--bg-primary);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
-.App-link {
-  color: #61dafb;
+
+/* --- 2. NAVBAR OSCURO PROFESIONAL --- */
+.navbar-pro {
+  background-color: var(--bg-dark);
+  /* Fondo oscuro */
+  border-bottom: 1px solid var(--border-color-dark);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.navbar-brand-pro {
+  color: var(--accent) !important;
+  /* Acento naranja */
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.btn-cta-pro {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #000 !important;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cta-pro:hover {
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+}
+
+
+/* --- 3. HEADER Y BUSCADOR (CLAROS) --- */
+.page-header-pro {
+  background-color: var(--bg-component);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.page-header-pro p {
+  color: #6c757d;
+}
+
+.search-input-pro {
+  /* ... (sin cambios) ... */
+}
+
+
+/* --- 4. TARJETAS DE PRODUCTO (CLARAS) --- */
+.card-pro {
+  background-color: var(--bg-component);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  /* Ya no necesitamos una altura mínima fija, el contenido se auto-ajustará */
+}
+
+/* ... (el resto de los estilos de tarjeta clara se mantienen) ... */
+.card-pro:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.card-img-pro {
+  border-radius: 8px;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-title-pro {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 1.2rem;
+  /* --- AÑADIMOS ESTO PARA CORTAR TEXTO LARGO --- */
+  white-space: nowrap;
+  /* Evita que el texto salte a la siguiente línea */
+  overflow: hidden;
+  /* Oculta el texto que se desborda */
+  text-overflow: ellipsis;
+  /* Muestra "..." al final del texto cortado */
+}
+
+.card-price-pro {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+.card-stock-pro {
+  color: var(--success-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.btn-card-view {
+  background-color: #0d6efd !important;
+  border: none !important;
+}
+
+.btn-card-edit {
+  background-color: var(--accent) !important; /* Usamos tu variable naranja */
+  border-color: var(--accent) !important; /* Aseguramos que el borde coincida */
+  border: none !important; /* Puedes mantener esto si no quieres borde */
+}
+
+
+/* --- 5. FOOTER (CLARO) --- */
+.footer-pro {
+  color: #6c757d;
+  font-size: 0.9rem;
+  padding-top: 1.5rem;
+}
+
+/* src/App.css */
+/* ... (todo tu código CSS existente) ... */
+
+/* --- CORRECCIÓN DE BOTONES DE TARJETA --- */
+/* Añadimos los efectos hover que faltaban */
+.btn-card-view,
+.btn-card-edit {
+  transition: all 0.2s ease-in-out;
+}
+
+/* En lugar de oscurecer el color, ahora le damos un efecto de 'levantamiento' y una ligera transparencia */
+.btn-card-view:hover,
+.btn-card-edit:hover {
+  transform: translateY(-2px);
+  opacity: 0.85;
+}
+
+/* --- 6. BARRA DE FILTROS --- */
+.filter-bar {
+  background-color: var(--bg-component);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.filter-select {
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 8px !important;
+  height: 100%;
+  /* Para que se alinee con el input */
+}
+
+.filter-select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
