@@ -3,11 +3,14 @@ import { Container } from 'react-bootstrap';
 
 const Footer = () => {
     return (
-        <footer className="footer-pro mt-5 py-4 text-center">
+        <footer className="footer-pro text-center">
             <Container>
-                © {new Date().getFullYear()} Inventario PRO — Proyecto Final de Desarrollo Web
+                <p className="mb-0">
+                    &copy; {new Date().getFullYear()} Inventario PRO — Proyecto Final de Desarrollo Web de Carlos Abalos
+                </p>
             </Container>
         </footer>
     );
 };
+
 export default Footer;

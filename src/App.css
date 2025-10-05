@@ -1,29 +1,27 @@
-/* --- 1. SISTEMA DE DISEÑO --- */
+@import 'swiper/css';
+@import 'swiper/css/effect-coverflow';
+@import 'swiper/css/pagination';
+
+/* --- 1. SISTEMA DE DISEÑO Y VARIABLES GLOBALES --- */
 :root {
-  --bg-primary: #f0f2f5;
-  /* Fondo de página: Gris muy claro */
-  --bg-component: #ffffff;
-  /* Fondo para componentes claros: Blanco */
-  --bg-dark: #1e1e1e;
-  /* Fondo para componentes oscuros (Navbar) */
-  --accent: #ff9800;
-  /* Naranja elegante */
-  --accent-hover: #ffa726;
-  /* Naranja más claro para hover */
-  --text-primary: #212529;
-  /* Texto principal (sobre fondos claros) */
-  --text-light: #e0e0e0;
-  /* Texto secundario (sobre fondos oscuros) */
-  --border-color: #dee2e6;
-  /* Borde para componentes claros */
-  --border-color-dark: #2c2c2c;
-  /* Borde para componentes oscuros */
-  --success-color: #198754;
+  /* Paleta de Colores */
+  --bg-primary: #f0f2f5;      /* Fondo principal de la página */
+  --bg-component: #ffffff;    /* Fondo para componentes como tarjetas y filtros */
+  --bg-dark: #1e1e1e;         /* Fondo para componentes oscuros como el Navbar */
+  --accent: #ff9800;          /* Color de acento principal (naranja) */
+  --accent-hover: #ffa726;    /* Acento más claro para efectos hover */
+  --text-primary: #212529;    /* Texto principal sobre fondos claros */
+  --text-light: #e0e0e0;      /* Texto sobre fondos oscuros */
+  --border-color: #dee2e6;    /* Bordes para componentes claros */
+  --success-color: #198754;    /* Color para indicar éxito (ej. stock) */
+
+  /* Tipografía */
+  --font-sans-serif: 'Inter', sans-serif;
 }
 
-/* --- ESTILOS GLOBALES --- */
+/* --- 2. ESTILOS GLOBALES Y DE LAYOUT --- */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-sans-serif);
   background-color: var(--bg-primary);
   color: var(--text-primary);
 }
@@ -32,65 +30,38 @@ body {
   background-color: var(--bg-primary);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--text-primary);
+h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+/* --- 3. COMPONENTES ESPECÍFICOS --- */
 
-/* --- 2. NAVBAR OSCURO PROFESIONAL --- */
+/* Navbar */
 .navbar-pro {
   background-color: var(--bg-dark);
-  /* Fondo oscuro */
-  border-bottom: 1px solid var(--border-color-dark);
+  border-bottom: 1px solid #2c2c2c;
 }
 
 .navbar-brand-pro {
   color: var(--accent) !important;
-  /* Acento naranja */
   font-weight: 700;
   font-size: 1.25rem;
 }
 
-.btn-cta-pro {
-  background-color: var(--accent) !important;
-  border-color: var(--accent) !important;
-  color: #000 !important;
-  font-weight: 600;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+.navbar-pro .nav-link {
+  padding: 0.5rem 1rem; 
+  border-radius: 0.375rem; 
+  color: var(--text-light);
+  transition: all 0.2s ease-in-out;
 }
 
-.btn-cta-pro:hover {
-  background-color: var(--accent-hover) !important;
-  border-color: var(--accent-hover) !important;
+.navbar-pro .nav-link:hover,
+.navbar-pro .nav-link.active { /* 'active' es la clase que añade NavLink */
+  background-color: var(--accent);
+  color: var(--bg-dark); 
 }
 
-
-/* --- 3. HEADER Y BUSCADOR (CLAROS) --- */
-.page-header-pro {
-  background-color: var(--bg-component);
-  padding: 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  border: 1px solid var(--border-color);
-}
-
-.page-header-pro p {
-  color: #6c757d;
-}
-
-.search-input-pro {
-  /* ... (sin cambios) ... */
-}
-
-
-/* --- 4. TARJETAS DE PRODUCTO (CLARAS) --- */
+/* Tarjeta de Producto */
 .card-pro {
   background-color: var(--bg-component);
   border: 1px solid var(--border-color);
@@ -98,84 +69,93 @@ h6 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   overflow: hidden;
-  /* Ya no necesitamos una altura mínima fija, el contenido se auto-ajustará */
 }
 
-/* ... (el resto de los estilos de tarjeta clara se mantienen) ... */
 .card-pro:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
+.card-img-container-pro {
+  padding: 1rem;
+}
+
 .card-img-pro {
-  border-radius: 8px;
+  border-radius: 4px;
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 250px;
+  object-fit: contain;
 }
 
 .card-title-pro {
-  color: var(--text-primary);
   font-weight: 600;
   font-size: 1.2rem;
-  /* --- AÑADIMOS ESTO PARA CORTAR TEXTO LARGO --- */
   white-space: nowrap;
-  /* Evita que el texto salte a la siguiente línea */
   overflow: hidden;
-  /* Oculta el texto que se desborda */
   text-overflow: ellipsis;
-  /* Muestra "..." al final del texto cortado */
 }
 
 .card-price-pro {
-  color: var(--text-primary);
   font-weight: 700;
   font-size: 1.4rem;
 }
 
-.card-stock-pro {
-  color: var(--success-color);
-  font-size: 0.9rem;
-  font-weight: 500;
+/* Tarjeta especial para "Añadir Producto" */
+.add-product-card {
+  background-color: #2c2c2c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-.btn-card-view {
-  background-color: #0d6efd !important;
-  border: none !important;
+.add-product-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-decoration: none;
+  color: #ced4da;
+  transition: color 0.2s ease-in-out;
 }
 
-.btn-card-edit {
-  background-color: var(--accent) !important; /* Usamos tu variable naranja */
-  border-color: var(--accent) !important; /* Aseguramos que el borde coincida */
-  border: none !important; /* Puedes mantener esto si no quieres borde */
+.add-product-card:hover {
+  border-color: var(--accent-hover);
+  box-shadow: 0 0 15px rgba(255, 167, 38, 0.3);
+  transform: translateY(-5px);
+}
+
+.add-product-card:hover .add-product-link {
+  color: var(--accent-hover);
 }
 
 
-/* --- 5. FOOTER (CLARO) --- */
-.footer-pro {
-  color: #6c757d;
-  font-size: 0.9rem;
-  padding-top: 1.5rem;
-}
-
-/* src/App.css */
-/* ... (todo tu código CSS existente) ... */
-
-/* --- CORRECCIÓN DE BOTONES DE TARJETA --- */
-/* Añadimos los efectos hover que faltaban */
-.btn-card-view,
-.btn-card-edit {
+/* Botones */
+.btn-cta-pro, .btn-form-submit, .btn-card-edit {
+  background-color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #ffffff !important;
+  font-weight: 600;
   transition: all 0.2s ease-in-out;
 }
 
-/* En lugar de oscurecer el color, ahora le damos un efecto de 'levantamiento' y una ligera transparencia */
-.btn-card-view:hover,
-.btn-card-edit:hover {
+.btn-cta-pro:hover, .btn-form-submit:hover, .btn-card-edit:hover {
+  background-color: var(--accent-hover) !important;
+  border-color: var(--accent-hover) !important;
+  transform: translateY(-2px);
+}
+
+.btn-card-view {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-card-view:hover {
   transform: translateY(-2px);
   opacity: 0.85;
 }
 
-/* --- 6. BARRA DE FILTROS --- */
+
+/* Barra de Filtros y Formularios */
 .filter-bar {
   background-color: var(--bg-component);
   padding: 1.5rem;
@@ -184,16 +164,94 @@ h6 {
   border: 1px solid var(--border-color);
 }
 
-.filter-select {
-  background-color: #fff;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  border-radius: 8px !important;
-  height: 100%;
-  /* Para que se alinee con el input */
+/* --- 4. ESTILOS PARA EL CARRUSEL SWIPER (CON CORRECCIÓN) --- */
+.swiper-section {
+  margin-top: 4rem;
+  margin-bottom: 3rem;
+  overflow: visible; 
 }
 
-.filter-select:focus {
+.mySwiper {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: transform 0.4s ease, border-color 0.3s ease; 
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-slide-active {
+  transform: scale(1.2) !important; 
   border-color: var(--accent);
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 25px #ff9800;
+  z-index: 1; 
+}
+
+.swiper-slide a {
+  text-decoration: none;
+  color: white;
+  position: relative;
+  display: block;
+  height: 100%;
+}
+
+.slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  text-align: center;
+  transition: background 0.3s ease;
+}
+
+.swiper-slide-active .slide-caption {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.slide-caption h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: white;
+  font-weight: 600;
+}
+
+.swiper-pagination-bullet {
+  background-color: #fff;
+  opacity: 0.7;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: var(--accent) !important;
+  opacity: 1;
+}
+
+/* --- 5. FOOTER (OSCURO) --- */
+.footer-pro {
+  background-color: var(--bg-dark);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid #2c2c2c;
+  margin-top: auto;
+}
+
+.navbar-logo {
+  margin-right: 0.75rem;
 }

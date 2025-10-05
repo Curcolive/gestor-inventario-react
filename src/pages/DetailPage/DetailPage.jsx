@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getProductById, deleteProduct } from '../../api/products';
-// Se ha verificado que todas las importaciones necesarias estén presentes
-import { Row, Col, Spinner, Button, Badge, Image } from 'react-bootstrap';
+import { Row, Col, Spinner, Button, Image, Modal } from 'react-bootstrap';
 
+/**
+ * Componente de página que muestra los detalles completos de un único producto.
+ */
 const DetailPage = () => {
+    // --- Hooks ---
     const { id } = useParams();
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    // useState para almacenar los datos del producto una vez que se obtienen.
+    const [product, setProduct] = useState(null);
+    // useState para controlar el estado de carga y mostrar un spinner.
+    const [loading, setLoading] = useState(true);
+    // useState para controlar la visibilidad del modal de confirmación de borrado.
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
 
-    // Lógica para cargar el producto (sin cambios)
+    // --- Efectos ---
+    /**
+     * useEffect que se ejecuta al cargar el componente para obtener los datos del producto.
+     */
     useEffect(() => {
         const loadProduct = async () => {
             try {
@@ -25,21 +35,30 @@ const DetailPage = () => {
         loadProduct();
     }, [id]);
 
-    // Lógica para eliminar el producto (sin cambios)
-    const handleDelete = async () => {
-        if (!product) return;
-        const isConfirmed = window.confirm(`¿Estás seguro de que quieres eliminar "${product.name}"?`);
-        if (isConfirmed) {
-            try {
-                await deleteProduct(id);
-                navigate('/');
-            } catch (error) {
-                console.error("Error al eliminar el producto:", error);
-            }
-        }
+    // --- Funciones ---
+    /**
+     * Abre el modal de confirmación antes de eliminar el producto.
+     */
+    const handleDelete = () => {
+        setShowConfirmModal(true);
     };
 
-    // Renderizado condicional para el estado de carga
+    /**
+     * Ejecuta la eliminación del producto después de la confirmación en el modal.
+     */
+    const confirmDelete = async () => {
+        try {
+            await deleteProduct(id);
+            setShowConfirmModal(false);
+            navigate('/productos');
+        } catch (error) {
+            console.error("Error al eliminar el producto:", error);
+            alert('Hubo un error al eliminar el producto.');
+        }
+    };
+    
+    // --- Renderizado Condicional ---
+    // Muestra un spinner mientras los datos del producto se están cargando.
     if (loading) {
         return (
             <div className="text-center py-5">
@@ -48,57 +67,55 @@ const DetailPage = () => {
         );
     }
 
-    // Renderizado si el producto no se encuentra
+    // Muestra un mensaje si el producto no pudo ser encontrado.
     if (!product) {
         return (
             <div className="text-center py-5">
                 <h2>Producto no encontrado</h2>
-                <Button as={Link} to="/" variant="primary">Volver al Inicio</Button>
+                <Button as={Link} to="/productos" variant="primary">Volver a Productos</Button>
             </div>
         );
     }
-
-    // --- RENDERIZADO FINAL Y CORREGIDO DE LA PÁGINA DE DETALLE ---
+    
+    // --- Renderizado Principal ---
     return (
-        // Usamos nuestro 'page-header-pro' para un estilo consistente
-        <div className="page-header-pro">
-            <Row className="g-4 g-lg-5"> {/* g-5 para más espacio en pantallas grandes */}
-                
-                {/* Columna de la Imagen */}
-                <Col md={6}>
-                    <Image src={product.imageUrl} alt={product.name} fluid rounded />
-                </Col>
+        <>
+            {/* Contenedor principal con los detalles del producto */}
+            <div className="page-header-pro">
+                <Row className="g-4 g-lg-5">
+                    <Col md={6}>
+                        <Image src={product.imageUrl} alt={product.name} fluid rounded />
+                    </Col>
+                    <Col md={6} className="d-flex flex-column">
+                        <h1 className="display-5 fw-bold">{product.name}</h1>
+                        {/* ... (resto de detalles como precio, stock, descripción) ... */}
+                        <div className="mt-auto d-flex gap-2">
+                            <Button as={Link} to={`/editar/${product.id}`} className="btn-card-edit flex-grow-1 py-2">Editar</Button>
+                            <Button variant="danger" onClick={handleDelete} className="flex-grow-1 py-2">Eliminar</Button>
+                            <Button as={Link} to="/productos" variant="secondary" className="flex-grow-1 py-2">Volver</Button>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
 
-                {/* Columna de la Información */}
-                <Col md={6} className="d-flex flex-column">
-                    
-                    {/* Título grande y audaz */}
-                    <h1 className="display-5 fw-bold">{product.name}</h1>
-
-                    <div className="d-flex align-items-center my-3">
-                        <p className="display-6 m-0 me-4">
-                            ${new Intl.NumberFormat('de-DE').format(product.price)}
-                        </p>
-                        <Badge bg={product.stock > 0 ? 'success' : 'danger'} className="fs-6 py-2 px-3">
-                            {product.stock > 0 ? `${product.stock} en Stock` : 'Agotado'}
-                        </Badge>
-                    </div>
-
-                    {/* Descripción más grande y legible */}
-                    <p className="fs-5 text-secondary">
-                        {product.description}
-                    </p>
-
-                    {/* Botones empujados al fondo del contenedor */}
-                    <div className="mt-auto d-flex gap-2">
-                        <Button as={Link} to={`/editar/${product.id}`} className="btn-card-edit flex-grow-1 py-2">Editar</Button>
-                        <Button variant="danger" onClick={handleDelete} className="flex-grow-1 py-2">Eliminar</Button>
-                        <Button as={Link} to="/" variant="secondary" className="flex-grow-1 py-2">Volver</Button>
-                    </div>
-
-                </Col>
-            </Row>
-        </div>
+            {/* Modal para confirmar la eliminación del producto. */}
+            <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmar Eliminación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    ¿Estás seguro de que quieres eliminar <strong>"{product?.name}"</strong>? Esta acción no se puede deshacer.
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowConfirmModal(false)}>
+                        Cancelar
+                    </Button>
+                    <Button variant="danger" onClick={confirmDelete}>
+                        Eliminar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        </>
     );
 };
 

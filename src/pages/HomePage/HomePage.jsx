@@ -1,107 +1,105 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts } from '../../api/products';
 import { Link } from 'react-router-dom';
-// Asegúrate de que Form.Select esté importado
-import { Row, Col, Card, Button, Spinner, Form, Badge, } from 'react-bootstrap';
+import { Button, Container, Row, Col, Spinner } from 'react-bootstrap';
+import { FaBoxes } from 'react-icons/fa';
+import { getProducts } from '../../api/products';
 
+// Importaciones necesarias de la librería Swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Pagination, Autoplay } from 'swiper/modules';
+
+/**
+ * Página de inicio que da la bienvenida y muestra un carrusel de productos destacados.
+ */
 const HomePage = () => {
+    // --- Estados del Componente ---
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchTerm, setSearchTerm] = useState('');
 
+    // --- Efecto para Cargar Datos ---
+    // Se ejecuta una sola vez al montar el componente para obtener los productos del carrusel.
     useEffect(() => {
-        const loadProducts = async () => {
+        const loadProductsForCarousel = async () => {
             try {
-                const productList = await getProducts();
-                setProducts(productList);
+                const allProducts = await getProducts();
+                setProducts(allProducts.slice(0, 7)); // Tomamos hasta 7 productos.
             } catch (error) {
-                console.error("Error al cargar los productos:", error);
+                console.error("Error al cargar productos para el carrusel:", error);
             } finally {
                 setLoading(false);
             }
         };
-        loadProducts();
+        loadProductsForCarousel();
     }, []);
 
-    const filteredProducts = products.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    if (loading) {
-        return (
-            <div className="text-center py-5">
-                <Spinner animation="border" variant="primary" role="status">
-                    <span className="visually-hidden">Cargando...</span>
-                </Spinner>
-            </div>
-        );
-    }
-
+    // --- Renderizado del Componente ---
     return (
-        <>
-            {/* --- BARRA DE FILTROS COMPLETA RESTAURADA --- */}
-            <div className="filter-bar mb-4">
-                <Row className="g-3 align-items-center">
-                    <Col md={6}>
-                        <Form.Control
-                            type="text"
-                            className="search-input-pro"
-                            placeholder="Buscar por nombre de producto..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </Col>
-                    <Col md={2}>
-                        <Form.Select className="filter-select">
-                            <option>Todos los tipos</option>
-                        </Form.Select>
-                    </Col>
-                    <Col md={2}>
-                        <Form.Select className="filter-select">
-                            <option>Ordenar por</option>
-                        </Form.Select>
-                    </Col>
-                    <Col md={2}>
-                        <Form.Select className="filter-select">
-                            <option>Asc</option>
-                        </Form.Select>
-                    </Col>
-                </Row>
-            </div>
-            {/* ------------------------------------------- */}
-
-            <Row xs={1} md={2} lg={3} xl={4} className="g-4">
-                {filteredProducts.map(product => (
-                    <Col key={product.id}>
-                        <Card className="card-pro h-100">
-                            <Card.Img src={product.imageUrl} alt={product.name} className="card-img-pro" />
-                            <Card.Body className="d-flex flex-column">
-                                <Card.Title className="card-title-pro">{product.name}</Card.Title>
-                                <div className="d-flex align-items-center mb-2">
-                                    <p className="card-price-pro m-0 me-3">
-                                        ${new Intl.NumberFormat('de-DE').format(product.price)}
-                                    </p>
-                                    <Badge bg={product.stock > 0 ? 'success' : 'danger'}>
-                                        {product.stock > 0 ? `${product.stock} en Stock` : 'Agotado'}
-                                    </Badge>
-                                </div>
-                                <div className="d-flex justify-content-between mt-auto pt-3">
-                                    <Button as={Link} to={`/producto/${product.id}`} className="btn-card-view w-50 me-1">Ver</Button>
-                                    <Button as={Link} to={`/editar/${product.id}`} className="btn-card-edit w-50 ms-1">Editar</Button>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                ))}
+        <Container>
+            {/* --- Sección de Bienvenida (Compacta) --- */}
+            <Row className="justify-content-center text-center mt-3">
+                <Col md={8}>
+                    <FaBoxes size={60} className="mb-3 text-warning" />
+                    <h1 className="display-5 fw-bold">
+                        Bienvenido a Inventario PRO
+                    </h1>
+                    <p className="lead text-muted mt-2 mb-3">
+                        La solución moderna y eficiente para gestionar el inventario de tu negocio. Controla tu stock, precios y categorías en un solo lugar.
+                    </p>
+                    <Button as={Link} to="/productos" size="lg" className="btn-cta-pro">
+                        Gestionar Inventario
+                    </Button>
+                </Col>
             </Row>
 
-            {filteredProducts.length === 0 && !loading && (
-                <div className="text-center py-5">
-                    <h3>No se encontraron productos</h3>
-                    <p>Intenta con otra búsqueda o añade un nuevo producto.</p>
-                </div>
-            )}
-        </>
+            {/* --- Sección del Carrusel de Productos --- */}
+            <Row className="justify-content-center text-center swiper-section">
+                <Col xs={12}>
+                    <h2 className="mb-4">Productos Destacados</h2>
+                    
+                    {/* Renderizado Condicional: Muestra spinner, el carrusel, o un mensaje */}
+                    {loading ? (
+                        <Spinner animation="border" variant="primary" />
+                    ) : products.length > 0 ? (
+                        <Swiper
+                            loop={true}
+                            initialSlide={1}
+                            effect={'coverflow'}
+                            grabCursor={true}
+                            centeredSlides={true}
+                            slidesPerView={'auto'}
+                            autoplay={{
+                                delay: 3000,
+                                disableOnInteraction: false,
+                            }}
+                            coverflowEffect={{
+                                rotate: 30,
+                                stretch: -20,
+                                depth: 200,
+                                modifier: 1,
+                                slideShadows: true,
+                            }}
+                            pagination={{ clickable: true }}
+                            modules={[EffectCoverflow, Pagination, Autoplay]}
+                            className="mySwiper"
+                        >
+                            {/* Mapea los productos para crear cada slide del carrusel */}
+                            {products.map((product) => (
+                                <SwiperSlide key={product.id}>
+                                    <Link to={`/producto/${product.id}`}>
+                                        <img src={product.imageUrl} alt={product.name} />
+                                        <div className="slide-caption">
+                                            <h3>{product.name}</h3>
+                                        </div>
+                                    </Link>
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    ) : (
+                        <p>No hay productos destacados para mostrar en este momento.</p>
+                    )}
+                </Col>
+            </Row>
+        </Container>
     );
 };
 
