@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# 📦 Inventario PRO
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Sistema de gestión de inventario desarrollado con **React** y **Firebase**. Permite administrar productos con operaciones CRUD completas, filtros avanzados y una interfaz moderna y responsiva.
 
-## Available Scripts
+> 🎓 **Proyecto Final** — Desarrollo Web · Carlos Abalos
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## ✨ Funcionalidades
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Catálogo de productos** con búsqueda, filtrado por categoría y ordenamiento
+- **CRUD completo**: Crear, ver detalle, editar y eliminar productos
+- **Carrusel interactivo** de productos destacados en la página de inicio (Swiper)
+- **Previsualización de imagen** en tiempo real al crear/editar productos
+- **Modales de confirmación** para acciones destructivas y feedback de éxito/error
+- **Diseño responsivo** optimizado para escritorio y móviles
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## 🛠️ Tecnologías
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Categoría | Tecnología |
+|-----------|------------|
+| Frontend | React 19, React Router 7 |
+| UI | React Bootstrap, React Icons |
+| Base de datos | Firebase Firestore |
+| Formularios | React Hook Form |
+| Carrusel | Swiper.js |
+| Deploy | Vercel |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📂 Estructura del Proyecto
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+src/
+├── api/
+│   └── products.js          # Funciones de acceso a Firestore
+├── assets/
+│   └── logo.svg             # Logo de la aplicación
+├── components/
+│   ├── Navbar/Navbar.jsx     # Barra de navegación
+│   └── Footer/Footer.jsx    # Pie de página
+├── pages/
+│   ├── HomePage/             # Bienvenida + carrusel
+│   ├── ProductosPage/        # Catálogo con filtros
+│   ├── CreatePage/           # Formulario de creación
+│   ├── EditPage/             # Formulario de edición
+│   └── DetailPage/           # Detalle + eliminar
+├── constants.js              # Categorías, formateador de moneda
+├── firebaseConfig.js         # Configuración de Firebase
+├── App.jsx                   # Rutas principales
+├── App.css                   # Estilos globales
+├── index.jsx                 # Punto de entrada
+└── index.css                 # Bootstrap + tipografías
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🚀 Instalación y Uso
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Requisitos previos
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [Node.js](https://nodejs.org/) (v18 o superior)
+- Cuenta de [Firebase](https://console.firebase.google.com/) con Firestore habilitado
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Pasos
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Clonar el repositorio**
 
-## Learn More
+   ```bash
+   git clone https://github.com/tu-usuario/gestor-inventario.git
+   cd gestor-inventario
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. **Instalar dependencias**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   ```bash
+   npm install
+   ```
 
-### Code Splitting
+3. **Configurar variables de entorno**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   Crear un archivo `.env` en la raíz del proyecto con tus credenciales de Firebase:
 
-### Analyzing the Bundle Size
+   ```env
+   REACT_APP_API_KEY=tu_api_key
+   REACT_APP_AUTH_DOMAIN=tu_proyecto.firebaseapp.com
+   REACT_APP_PROJECT_ID=tu_proyecto
+   REACT_APP_STORAGE_BUCKET=tu_proyecto.firebasestorage.app
+   REACT_APP_MESSAGING_SENDER_ID=tu_sender_id
+   REACT_APP_APP_ID=tu_app_id
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+4. **Iniciar en modo desarrollo**
 
-### Making a Progressive Web App
+   ```bash
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   La aplicación se abrirá en [http://localhost:3000](http://localhost:3000).
 
-### Advanced Configuration
+5. **Generar build de producción** *(opcional)*
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   ```bash
+   npm run build
+   ```
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🌐 Deploy
 
-### `npm run build` fails to minify
+La aplicación está desplegada en **Vercel**. Cada push a la rama principal dispara un deploy automático.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Las variables de entorno de Firebase deben configurarse en **Vercel → Settings → Environment Variables**.
+
+---
+
+## 📄 Licencia
+
+Proyecto académico — Todos los derechos reservados © {año} Carlos Abalos.

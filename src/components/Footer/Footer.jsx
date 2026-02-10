@@ -1,6 +1,6 @@
-import React from 'react';
 import { Container } from 'react-bootstrap';
 
+/** Pie de página de la aplicación con créditos del autor. */
 const Footer = () => {
     return (
         <footer className="footer-pro text-center">

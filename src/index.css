@@ -1,14 +1,18 @@
-/* 1. IMPORTANTE: Esta línea carga TODOS los estilos de Bootstrap (colores, layout, componentes).
-      Esta es la pieza que nos faltaba. */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-/* 2. Definimos nuestras fuentes personalizadas para toda la aplicación */
+/* Tipografías personalizadas */
 body {
   font-family: 'Lato', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, .navbar-brand {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.navbar-brand {
   font-family: 'Montserrat', sans-serif;
 }

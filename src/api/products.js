@@ -1,19 +1,21 @@
-// Importaciones de Firestore para interactuar con la base de datos
+/**
+ * @module api/products
+ * Funciones para interactuar con la colección 'products' en Firestore.
+ * Cada función maneja errores de forma consistente, registrándolos en consola
+ * y relanzándolos para que el componente que las invoque pueda reaccionar.
+ */
 import { collection, getDocs, addDoc, doc, getDoc, updateDoc, deleteDoc } from "firebase/firestore";
-// Importación de la instancia de la base de datos configurada
 import { db } from '../firebaseConfig';
 
-// Referencia a la colección 'products' en Firestore para reutilizarla
 const productsCollection = collection(db, "products");
 
 /**
- * Obtiene todos los productos de la colección 'products'.
- * @returns {Promise<Array>} Una promesa que resuelve a un array de objetos de producto.
+ * Obtiene todos los productos de la colección.
+ * @returns {Promise<Array<{id: string}>>} Lista de productos con su ID incluido.
  */
 export const getProducts = async () => {
-    const productsSnapshot = await getDocs(productsCollection);
-    // Mapea los documentos obtenidos, añadiendo el ID a los datos de cada producto
-    return productsSnapshot.docs.map(doc => ({
+    const snapshot = await getDocs(productsCollection);
+    return snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
     }));
@@ -21,8 +23,9 @@ export const getProducts = async () => {
 
 /**
  * Añade un nuevo producto a la colección.
- * @param {Object} productData - Los datos del producto a crear.
- * @returns {Promise<string>} El ID del nuevo documento creado.
+ * @param {Object} productData - Datos del producto a crear.
+ * @returns {Promise<string>} ID del documento creado.
+ * @throws {Error} Si la escritura en Firestore falla.
  */
 export const addProduct = async (productData) => {
     try {
@@ -30,26 +33,27 @@ export const addProduct = async (productData) => {
         return docRef.id;
     } catch (error) {
         console.error("Error al añadir el producto:", error);
-        throw error; // Relanza el error para que sea manejado por el componente
+        throw error;
     }
 };
 
 /**
- * Obtiene un único producto por su ID.
- * @param {string} id - El ID del documento a obtener.
- * @returns {Promise<Object|null>} El objeto del producto o null si no se encuentra.
+ * Obtiene un producto por su ID.
+ * @param {string} id - ID del documento.
+ * @returns {Promise<Object|null>} Producto encontrado o null si no existe.
+ * @throws {Error} Si la lectura en Firestore falla.
  */
 export const getProductById = async (id) => {
     try {
         const productRef = doc(db, "products", id);
-        const productSnapshot = await getDoc(productRef);
+        const snapshot = await getDoc(productRef);
 
-        if (productSnapshot.exists()) {
-            return { id: productSnapshot.id, ...productSnapshot.data() };
-        } else {
-            console.warn("No se encontró el producto con el id:", id);
-            return null;
+        if (snapshot.exists()) {
+            return { id: snapshot.id, ...snapshot.data() };
         }
+
+        console.warn("Producto no encontrado con ID:", id);
+        return null;
     } catch (error) {
         console.error("Error al obtener el producto:", error);
         throw error;
@@ -57,9 +61,10 @@ export const getProductById = async (id) => {
 };
 
 /**
- * Actualiza un producto existente por su ID.
- * @param {string} id - El ID del producto a actualizar.
- * @param {Object} productData - Los nuevos datos para el producto.
+ * Actualiza un producto existente.
+ * @param {string} id - ID del producto a actualizar.
+ * @param {Object} productData - Nuevos datos del producto.
+ * @throws {Error} Si la actualización en Firestore falla.
  */
 export const updateProduct = async (id, productData) => {
     try {
@@ -73,7 +78,8 @@ export const updateProduct = async (id, productData) => {
 
 /**
  * Elimina un producto por su ID.
- * @param {string} id - El ID del producto a eliminar.
+ * @param {string} id - ID del producto a eliminar.
+ * @throws {Error} Si la eliminación en Firestore falla.
  */
 export const deleteProduct = async (id) => {
     try {

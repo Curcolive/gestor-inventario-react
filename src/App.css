@@ -98,6 +98,21 @@ h1, h2, h3, h4, h5, h6 {
 .card-price-pro {
   font-weight: 700;
   font-size: 1.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* Evita que el badge de stock se salga del contenedor con precios largos */
+.card-price-stock-row {
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.card-price-stock-row .badge {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* Tarjeta especial para "Añadir Producto" */
